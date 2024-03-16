@@ -53,7 +53,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
       isCameraInitialized.value = true;
       update();
     } else {
-      print('Permission denied');
+      debugPrint('Permission denied');
     }
   }
 
@@ -68,14 +68,12 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> onSingleTapped(Recognition result) async {
-    // Calculate the zoom level based on the size of the selected object
     double objectWidth = result.location.width;
     double objectHeight = result.location.height;
-    double maxObjectSize = 240.0; // Maximum size of the object to zoom in
+    double maxObjectSize = 240.0; 
     double zoomLevel =
         1.0 + ((objectWidth + objectHeight) / (2 * maxObjectSize));
 
-    // Set the zoom level and update the state
     isZoomed.value = true;
     await cameraController.setZoomLevel(zoomLevel);
     singleTappedObject = result;
@@ -93,12 +91,9 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     if (frameCount.value % 10 == 0) {
       frameCount.value = 0;
 
-      // Process the frame to detect objects
       _detector!.processFrame(cameraImage);
 
-      // If there are detected objects and the camera is not already zoomed in
       if (results != null && results!.isNotEmpty && !isZoomed.value) {
-        // Calculate the center coordinates and size of the first detected object
         Recognition? firstObject;
         if (results!.length > 1) {
           firstObject = singleTappedObject;
@@ -108,12 +103,10 @@ class HomeController extends GetxController with WidgetsBindingObserver {
         double objectWidth = firstObject!.location.width;
         double objectHeight = firstObject.location.height;
 
-        // Calculate the zoom level based on the size of the detected object
-        double maxObjectSize = 240.0; // Maximum size of the object to zoom in
+        double maxObjectSize = 240.0; 
         double zoomLevel =
             1.0 + ((objectWidth + objectHeight) / (2 * maxObjectSize));
 
-        // Set the zoom level and update the state
         isZoomed.value = true;
         await cameraController.setZoomLevel(zoomLevel);
         singleTappedObject = firstObject;

@@ -20,8 +20,8 @@ class ImageController extends GetxController {
   Future<void> saveImageToDevice(File imageFile) async {
     try {
       final Directory directory = Platform.isAndroid
-          ? Directory('/storage/emulated/0/DCIM') // Android DCIM directory
-          : await getApplicationDocumentsDirectory(); // iOS Photos directory
+          ? Directory('/storage/emulated/0/DCIM') 
+          : await getApplicationDocumentsDirectory(); 
 
       final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
       final String fileName = 'image_$timestamp.png';
